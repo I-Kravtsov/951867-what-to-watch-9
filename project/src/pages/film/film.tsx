@@ -2,22 +2,12 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Overview from '../../components/overview/overview';
 import FilmCard from '../../components/film-card/film-card';
+import { FilmCardType, PromoFilmCardType } from '../../types/types';
 
 type FilmScreenProps = {
   cardsCount: number,
-  promoFilmCard: {
-    title: string,
-    genre: string,
-    year: number,
-  },
-  filmCard: {
-    image:  {
-      imageSrc:  string,
-      imageAlt:  string,
-    },
-    filmHref:  string,
-    filmTitle:  string,
-  }
+  promoFilmCard: PromoFilmCardType,
+  filmCard: FilmCardType,
 };
 
 function Film({promoFilmCard, filmCard, cardsCount}: FilmScreenProps): JSX.Element {

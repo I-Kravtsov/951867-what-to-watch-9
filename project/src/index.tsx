@@ -14,11 +14,11 @@ const settings = {
   },
   filmCard: {
     image: {
-      imageSrc:  'img/fantastic-beasts-the-crimes-of-grindelwald.jpg ',
-      imageAlt:  'Fantastic Beasts: The Crimes of Grindelwald ',
+      src:  'img/fantastic-beasts-the-crimes-of-grindelwald.jpg ',
+      alt:  'Fantastic Beasts: The Crimes of Grindelwald ',
     },
-    filmHref:  'film-page.html ',
-    filmTitle:  'Fantastic Beasts: The Crimes of Grindelwald ',
+    href:  'film-page.html ',
+    title:  'Fantastic Beasts: The Crimes of Grindelwald ',
   },
 };
 
