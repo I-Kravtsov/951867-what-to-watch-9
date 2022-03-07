@@ -2,23 +2,13 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmCard from '../../components/film-card/film-card';
 import { nanoid } from '@reduxjs/toolkit';
+import { FilmCardType, PromoFilmCardType } from '../../types/types';
 
 type MainScreenProps = {
   genres: string [],
   cardsCount: number,
-  promoFilmCard: {
-    title: string,
-    genre: string,
-    year: number,
-  },
-  filmCard: {
-    image:  {
-      imageSrc:  string,
-      imageAlt:  string,
-    },
-    filmHref:  string,
-    filmTitle:  string,
-  }
+  promoFilmCard: PromoFilmCardType,
+  filmCard: FilmCardType,
 };
 
 function Main({promoFilmCard, filmCard, cardsCount, genres}: MainScreenProps): JSX.Element {

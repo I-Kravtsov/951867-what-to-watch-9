@@ -1,22 +1,19 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../utils/const';
+import { FilmCardType } from '../../types/types';
+
 type FilmCardProps = {
-  filmCard: {
-    image:  {
-      imageSrc:  string,
-      imageAlt:  string,
-    },
-    filmHref:  string,
-    filmTitle:  string,
-  }
+  filmCard: FilmCardType
 }
 
 function FilmCard({filmCard}:FilmCardProps): JSX.Element {
   return (
     <article className="small-film-card catalog__films-card">
       <div className="small-film-card__image">
-        <img src={filmCard.image.imageSrc} alt={filmCard.image.imageAlt} width="280" height="175" />
+        <img src={filmCard.image.src} alt={filmCard.image.alt} width="280" height="175" />
       </div>
       <h3 className="small-film-card__title">
-        <a className="small-film-card__link" href={filmCard.filmHref}>{filmCard.filmTitle}</a>
+        <Link className="small-film-card__link" to={AppRoute.Film}>{filmCard.title}</Link>
       </h3>
     </article>
   );

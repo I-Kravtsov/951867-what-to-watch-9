@@ -1,17 +1,11 @@
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmCard from '../../components/film-card/film-card';
+import { FilmCardType } from '../../types/types';
 
 type MyListScreenProps = {
   myFilmsCardsCount: number,
-  filmCard: {
-    image:  {
-      imageSrc:  string,
-      imageAlt:  string,
-    },
-    filmHref:  string,
-    filmTitle:  string,
-  }
+  filmCard: FilmCardType,
 };
 
 function MyList({filmCard, myFilmsCardsCount}: MyListScreenProps): JSX.Element {
