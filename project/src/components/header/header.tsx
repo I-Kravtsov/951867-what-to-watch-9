@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../../utils/const';
+import UserBlockAuthorized from '../user-block-authorized/user-block-authorized';
+import UserBlockGuest from '../user-block-guest/user-block-guest';
 
 function Header(): JSX.Element {
+  const isAuthorized: boolean = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
   return (
     <header className="page-header film-card__head">
       <div className="logo">
@@ -10,17 +15,7 @@ function Header(): JSX.Element {
           <span className="logo__letter logo__letter--3">W</span>
         </Link>
       </div>
-
-      <ul className="user-block">
-        <li className="user-block__item">
-          <div className="user-block__avatar">
-            <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-          </div>
-        </li>
-        <li className="user-block__item">
-          <a className="user-block__link">Sign out</a>
-        </li>
-      </ul>
+      {isAuthorized ? <UserBlockAuthorized /> : <UserBlockGuest />}
     </header>
   );
 }

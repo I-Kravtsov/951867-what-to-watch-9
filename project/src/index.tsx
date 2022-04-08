@@ -2,28 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
 import { GENRES } from './utils/const';
+// import { promoFilm, filmsList } from './mock/mock';
+import { Provider } from 'react-redux';
+import ErrorMessage from './components/error-message/error-message';
+import { store } from './store';
+import { checkAuthAction, fetchFilmsListAction, fetchPromoFilmAction } from './store/api-actions';
 
 
 const settings = {
   genres: Object.values(GENRES),
-  cardsCount: 20,
-  promoFilmCard: {
-    title: 'The Grand Budapest Hotel',
-    genre: GENRES.DRAMS,
-    year: 2014,
-  },
-  filmCard: {
-    image: {
-      src:  'img/fantastic-beasts-the-crimes-of-grindelwald.jpg ',
-      alt:  'Fantastic Beasts: The Crimes of Grindelwald ',
-    },
-    href:  'film-page.html ',
-    title:  'Fantastic Beasts: The Crimes of Grindelwald ',
-  },
 };
+
+store.dispatch(fetchFilmsListAction());
+store.dispatch(checkAuthAction());
+store.dispatch(fetchPromoFilmAction());
 
 ReactDOM.render(
   <React.StrictMode>
-    <App promoFilmCard={settings.promoFilmCard} filmCard={settings.filmCard} cardsCount={settings.cardsCount} genres={settings.genres} />
+    <Provider store={store}>
+      <ErrorMessage />
+      <App genres={settings.genres} />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'));

@@ -1,19 +1,24 @@
+// import { MouseEventHandler } from 'react';
+import { SyntheticEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../utils/const';
+// import { AppRoute } from '../../utils/const';
 import { FilmCardType } from '../../types/types';
+import Videoplayer from '../videoPlayer/videoPlayer';
 
 type FilmCardProps = {
-  filmCard: FilmCardType
+  filmCard: FilmCardType,
+  activeCard?: FilmCardType | object,
+  onMouseOver?(evt: SyntheticEvent): void,
+  onMouseOut?(evt: SyntheticEvent): void,
 }
 
-function FilmCard({filmCard}:FilmCardProps): JSX.Element {
+function FilmCard({filmCard, activeCard, onMouseOver, onMouseOut}:FilmCardProps): JSX.Element {
+  const isPlaying = filmCard === activeCard;
   return (
-    <article className="small-film-card catalog__films-card">
-      <div className="small-film-card__image">
-        <img src={filmCard.image.src} alt={filmCard.image.alt} width="280" height="175" />
-      </div>
+    <article onMouseEnter={onMouseOver} onMouseLeave={onMouseOut}  className="small-film-card catalog__films-card" >
+      <Videoplayer isPlaying={isPlaying} filmCard={filmCard} />
       <h3 className="small-film-card__title">
-        <Link className="small-film-card__link" to={AppRoute.Film}>{filmCard.title}</Link>
+        <Link className="small-film-card__link" to={`/films/${filmCard.id}`}>{filmCard.name}</Link>
       </h3>
     </article>
   );

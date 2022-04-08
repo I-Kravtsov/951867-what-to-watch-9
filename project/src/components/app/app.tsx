@@ -1,5 +1,5 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import { AppRoute, AuthorisationStatus } from '../../utils/const';
+import { Route, Routes } from 'react-router-dom';
+import { AppRoute } from '../../utils/const';
 import Main from '../../pages/main/main';
 import SignIn from '../../pages/sign-in/sign-in';
 import Film from '../../pages/film/film';
@@ -8,23 +8,32 @@ import PrivateRoute from '../../components/private-route/private-route';
 import MyList from '../../pages/my-list/my-list';
 import AddReview from '../../pages/add-review/add-review';
 import Player from '../../pages/player/player';
-import { FilmCardType, PromoFilmCardType } from '../../types/types';
+import {useAppSelector} from '../../hooks';
+import LoadingScreen from '../loading-screen/loading-screen';
+import browserHistory from '../../browser-history';
+import HistoryRouter from '../history-route/history-route';
+
 
 type appScreenProps = {
   genres: string [],
-  cardsCount: number,
-  promoFilmCard: PromoFilmCardType,
-  filmCard: FilmCardType,
 };
 
 
-function App({promoFilmCard, filmCard, cardsCount, genres}: appScreenProps): JSX.Element {
+function App({ genres}: appScreenProps): JSX.Element {
+  const {isDataLoaded} = useAppSelector((state) => state);
+  const authorisationStatus = useAppSelector((state) => state.authorizationStatus);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return(
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Root}
-          element={<Main promoFilmCard={promoFilmCard} filmCard={filmCard} cardsCount={cardsCount} genres={genres} />}
+          element={<Main />}
         />
         <Route
           path={AppRoute.Login}
@@ -32,15 +41,15 @@ function App({promoFilmCard, filmCard, cardsCount, genres}: appScreenProps): JSX
         />
         <Route
           path={AppRoute.Film}
-          element={<Film promoFilmCard={promoFilmCard} filmCard={filmCard} cardsCount={cardsCount} />}
+          element={<Film />}
         />
         <Route
           path={AppRoute.MyList}
           element={
             <PrivateRoute
-              authorisationStatus={AuthorisationStatus.NotAuth}
+              authorisationStatus={authorisationStatus}
             >
-              <MyList filmCard={filmCard} myFilmsCardsCount={cardsCount}/>
+              <MyList />
             </PrivateRoute>
           }
         />
@@ -48,7 +57,7 @@ function App({promoFilmCard, filmCard, cardsCount, genres}: appScreenProps): JSX
           path={AppRoute.AddReview}
           element={
             <PrivateRoute
-              authorisationStatus={AuthorisationStatus.NotAuth}
+              authorisationStatus={authorisationStatus}
             >
               <AddReview/>
             </PrivateRoute>
@@ -64,7 +73,7 @@ function App({promoFilmCard, filmCard, cardsCount, genres}: appScreenProps): JSX
           element={<NotFound />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

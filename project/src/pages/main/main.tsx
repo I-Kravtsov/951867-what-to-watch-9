@@ -1,22 +1,52 @@
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import FilmCard from '../../components/film-card/film-card';
 import { nanoid } from '@reduxjs/toolkit';
-import { FilmCardType, PromoFilmCardType } from '../../types/types';
+import FilmsList from '../../components/film-list/film-list';
+import ShowMoreButton from '../../components/show-more-button/show-more-button';
+import { FilmListCardsQuantity} from '../../utils/const';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {incrementCardsCount, resetCardsCount, setCurrentGenre} from '../../store/action';
+import { Link } from 'react-router-dom';
 
-type MainScreenProps = {
-  genres: string [],
-  cardsCount: number,
-  promoFilmCard: PromoFilmCardType,
-  filmCard: FilmCardType,
-};
 
-function Main({promoFilmCard, filmCard, cardsCount, genres}: MainScreenProps): JSX.Element {
+function Main(): JSX.Element {
+
+  const genresList: Set<string> = new Set();
+  const filmsList = useAppSelector((state) => state.filmsList);
+  const promoFilm = useAppSelector((state) => state.promoFilm);
+  filmsList.forEach((film) =>  genresList.add(film.genre));
+  const genres: string[] = ['All genres', ...Array.from(genresList).slice(0, FilmListCardsQuantity.GenresCount)];
+
+  const currentGenre = useAppSelector((state) => state.genre);
+  const cardsCount = useAppSelector((state) => state.cardsCount);
+
+  const dispatch = useAppDispatch();
+
+  const onGenreClickHandler = (evt: React.MouseEvent) => {
+    const target = evt.target as HTMLElement;
+    if (!(target.tagName === 'A')) {
+      return;
+    }
+    dispatch(setCurrentGenre(target.innerText));
+    dispatch(resetCardsCount());
+  };
+
+  const onMoreButtonClickHandler = () => {
+    dispatch(incrementCardsCount());
+  };
+
+  const filteredFilmList = () => {
+    if (currentGenre === 'All genres') {
+      return filmsList;
+    }
+    return filmsList.filter((film)=> film.genre === currentGenre);
+  };
+
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={promoFilm.backgroundImage} alt={promoFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -26,14 +56,14 @@ function Main({promoFilmCard, filmCard, cardsCount, genres}: MainScreenProps): J
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={promoFilm.posterImage} alt="The Grand Budapest Hotel poster" width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{promoFilmCard.title}</h2>
+              <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{promoFilmCard.genre}</span>
-                <span className="film-card__year">{promoFilmCard.year}</span>
+                <span className="film-card__genre">{promoFilm.genre}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -59,20 +89,20 @@ function Main({promoFilmCard, filmCard, cardsCount, genres}: MainScreenProps): J
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
+
+          <ul className="catalog__genres-list" onClick={(evt: React.MouseEvent<HTMLElement>) => {
+            evt.preventDefault();
+            onGenreClickHandler(evt);
+          }}
+          >
             {genres.map ((genre) => (
-              <li key={nanoid()} className="catalog__genres-item catalog__genres-item--active">
-                <a href="#" className="catalog__genres-link">{genre}</a>
+              <li key={nanoid()} className={genre === currentGenre ? 'catalog__genres-item catalog__genres-item--active' : 'catalog__genres-item'}>
+                <Link to='#' className="catalog__genres-link">{genre}</Link>
               </li>),
             )}
           </ul>
-          <div className="catalog__films-list">
-            {new Array(cardsCount).fill(<FilmCard filmCard={filmCard} />)}
-          </div>
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          <FilmsList filmsList={filteredFilmList().slice(0, cardsCount)} />
+          {filteredFilmList().length > cardsCount ? <ShowMoreButton onMoreButtonClick={onMoreButtonClickHandler}  /> : ''}
         </section>
 
         <Footer />

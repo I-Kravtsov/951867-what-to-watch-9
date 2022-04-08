@@ -2,21 +2,29 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Overview from '../../components/overview/overview';
 import FilmCard from '../../components/film-card/film-card';
-import { FilmCardType, PromoFilmCardType } from '../../types/types';
+import { FilmCardType} from '../../types/types';
+import { useParams } from 'react-router-dom';
+import NotFound from '../../pages/not-found/not-found';
+import { useAppSelector } from '../../hooks';
 
-type FilmScreenProps = {
-  cardsCount: number,
-  promoFilmCard: PromoFilmCardType,
-  filmCard: FilmCardType,
-};
+// type FilmScreenProps = {
+//   filmsList: FilmCardType[],
+// };
 
-function Film({promoFilmCard, filmCard, cardsCount}: FilmScreenProps): JSX.Element {
+function Film(): JSX.Element {
+
+  const filmsList = useAppSelector((state) => state.filmsList);
+  const params = useParams();
+  const currentFilm = filmsList.find((item) => item.id === Number(params.id));
+  if(!currentFilm) {
+    return <NotFound />;
+  }
   return (
     <>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+            <img src={currentFilm.backgroundImage} alt={currentFilm.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -25,10 +33,10 @@ function Film({promoFilmCard, filmCard, cardsCount}: FilmScreenProps): JSX.Eleme
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{promoFilmCard.title}</h2>
+              <h2 className="film-card__title">{currentFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{promoFilmCard.genre}</span>
-                <span className="film-card__year">{promoFilmCard.year}</span>
+                <span className="film-card__genre">{currentFilm.genre}</span>
+                <span className="film-card__year">{currentFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -81,7 +89,10 @@ function Film({promoFilmCard, filmCard, cardsCount}: FilmScreenProps): JSX.Eleme
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            {new Array(cardsCount).fill(<FilmCard filmCard={filmCard} />)}
+            {filmsList.map((filmCard: FilmCardType) => {
+              const keyValue = filmCard.id;
+              return <FilmCard filmCard={filmCard} key = {keyValue} />;
+            })}
           </div>
         </section>
 
