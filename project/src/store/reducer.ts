@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { FilmsListType, FilmCardType, CommentsType } from '../types/types';
-import { setCurrentGenre, incrementCardsCount, resetCardsCount, loadFavoriteFilms, loadFilmsList, toggleFavoriteFilm, loadComments, loadSimilarFilms, loadPromoFilm, loadFilm, requireAuthorization, setError } from './action';
+import { FilmsListType, FilmCardType, CommentsType, NewCommentType } from '../types/types';
+import { setCurrentGenre, incrementCardsCount, resetCardsCount, addComment, loadFavoriteFilms, loadFilmsList, toggleFavoriteFilm, loadComments, loadSimilarFilms, loadPromoFilm, loadFilm, requireAuthorization, setError } from './action';
 import { AuthorizationStatus } from '../utils/const';
 
 const cardsCountStep = +8;
@@ -17,6 +17,7 @@ type initialStateType = {
   isDataLoaded: boolean,
   error: string,
   comments: CommentsType,
+  comment: NewCommentType,
 }
 
 const initialState: initialStateType = {
@@ -25,6 +26,10 @@ const initialState: initialStateType = {
   similarFilms: [],
   favoriteFilms: [],
   comments: [],
+  comment: {
+    comment: '',
+    rating: 0,
+  },
   promoFilm: {
     id: 0,
     name: '',
@@ -74,9 +79,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setCurrentGenre, (state, action) => {
       state.genre = action.payload;
     })
-    // .addCase(getFilmList, (state, action) => {
-    //   state.filmsList = action.payload;
-    // })
     .addCase(loadSimilarFilms, (state, action) => {
       state.similarFilms = action.payload;
       state.isDataLoaded = true;
@@ -95,6 +97,10 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadComments, (state, action) => {
       state.comments = action.payload;
+      state.isDataLoaded = true;
+    })
+    .addCase(addComment, (state, action) => {
+      state.comment = action.payload;
       state.isDataLoaded = true;
     })
     .addCase(incrementCardsCount, (state) => {state.cardsCount += cardsCountStep;})

@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { CommentsType, FilmCardType, FilmsListType } from '../types/types';
+import { CommentsType, FilmCardType, FilmsListType, NewCommentType } from '../types/types';
 import { AppRoute, AuthorizationStatus } from '../utils/const';
 
 export const setCurrentGenre = createAction('setCurrentGenre', (value: string) =>({payload: value}));
@@ -13,7 +13,7 @@ export const loadSimilarFilms = createAction<FilmsListType>('data/loadSimilarFil
 export const loadFavoriteFilms = createAction<FilmsListType>('data/loadFavoriteFilms');
 export const toggleFavoriteFilm = createAction<FilmCardType>('data/toggleFavoriteFilm');
 export const loadComments = createAction<CommentsType>('data/loadComments');
-export const addComment = createAction<FilmCardType>('data/addComment');
+export const addComment = createAction<NewCommentType>('data/addComment');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 export const setError = createAction<string>('setError');
-export const redirectToRoute = createAction<AppRoute>('redirectToRoute');
+export const redirectToRoute = createAction<AppRoute | string>('redirectToRoute');

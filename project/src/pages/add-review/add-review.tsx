@@ -1,7 +1,10 @@
 import CommentForm from '../../components/comment-form/comment-form';
 import Header from '../../components/header/header';
+import { useParams } from 'react-router-dom';
 
 function AddReview(): JSX.Element {
+
+  const {id} = useParams();
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
@@ -17,7 +20,7 @@ function AddReview(): JSX.Element {
           <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
         </div>
       </div>
-      <CommentForm />
+      <CommentForm filmId={Number(id)}  />
 
     </section>
   );

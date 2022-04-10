@@ -1,4 +1,4 @@
-import { AppRoute, AuthorizationStatus } from '../../utils/const';
+import { AuthorizationStatus } from '../../utils/const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import { Link, useNavigate } from 'react-router-dom';
 import React from 'react';
@@ -44,7 +44,7 @@ function FilmCardButtons(props: FilmCardButtonsProps): JSX.Element {
         </svg>
         <span>My list</span>
       </button>
-      {isAuthorized && isShowButton ? <Link to={AppRoute.AddReview} className="btn film-card__button">Add review</Link> : ''}
+      {isAuthorized && isShowButton ? <Link to={`/films/${filmId}/review`} className="btn film-card__button">Add review</Link> : ''}
     </div>
   );
 }

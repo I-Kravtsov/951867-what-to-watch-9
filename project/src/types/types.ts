@@ -31,4 +31,9 @@ export type CommentType = {
   }
 };
 
+export type NewCommentType = {
+  comment: string
+  rating: number
+};
+
 export type CommentsType = CommentType [];

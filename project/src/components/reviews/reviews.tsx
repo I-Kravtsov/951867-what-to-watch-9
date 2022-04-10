@@ -39,7 +39,7 @@ function Reviews () {
 
                   <footer className="review__details">
                     <cite className="review__author">{item.user.name}</cite>
-                    <time className="review__date" dateTime={item.date}>{item.date}</time>
+                    <time className="review__date" dateTime={dayjs(item.date).toISOString()}>{dayjs(item.date).format('MMMM DD YYYY')}</time>
                   </footer>
                 </blockquote>
 

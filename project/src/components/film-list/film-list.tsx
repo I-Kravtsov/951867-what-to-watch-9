@@ -8,7 +8,6 @@ type FilmListScreenProps = {
 
 function FilmList({ filmsList }: FilmListScreenProps) {
   const [activeCard, setActiveCard] = useState({});
-  // console.log(activeCard);
   return (
     <div
       className="catalog__films-list"

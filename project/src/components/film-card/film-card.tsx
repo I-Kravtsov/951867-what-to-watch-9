@@ -1,11 +1,7 @@
-// import { MouseEventHandler } from 'react';
 import { SyntheticEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import { AppRoute } from '../../utils/const';
 import { FilmCardType } from '../../types/types';
 import Videoplayer from '../videoPlayer/videoPlayer';
-// import { fetchFilmAction } from '../../store/api-actions';
-// import { store } from '../../store';
 
 type FilmCardProps = {
   filmCard: FilmCardType,

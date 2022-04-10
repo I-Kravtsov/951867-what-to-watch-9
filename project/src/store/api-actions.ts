@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {api} from '../store/';
 import { store } from '../store';
-import { FilmsListType, FilmCardType, CommentsType } from '../types/types';
-import { loadFilmsList, loadFavoriteFilms, loadPromoFilm, loadFilm, loadSimilarFilms, toggleFavoriteFilm, requireAuthorization, setError, redirectToRoute, loadComments } from './action';
+import { FilmsListType, FilmCardType, CommentsType, NewCommentType } from '../types/types';
+import { loadFilmsList, loadFavoriteFilms, loadPromoFilm, loadFilm, loadSimilarFilms, toggleFavoriteFilm, requireAuthorization, setError, redirectToRoute, loadComments, addComment } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { AuthorizationStatus, APIRoute, TIMEOUT_SHOW_ERROR, AppRoute } from '../utils/const';
 import { AuthData } from '../types/auth-data';
@@ -97,6 +97,19 @@ export const fetchCommentsAction = createAsyncThunk(
     try {
       const {data} = await api.get<CommentsType>(`${APIRoute.Comments}${filmId}`);
       store.dispatch(loadComments(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchAddCommentAction = createAsyncThunk(
+  'data/fetchAddComment',
+  async ({filmId, comment, rating}:{filmId: number, comment: string, rating: number}) => {
+    try {
+      const {data} = await api.post<NewCommentType>(`${APIRoute.Comments}${filmId}`, {comment, rating});
+      store.dispatch(addComment(data));
+      store.dispatch(redirectToRoute(`/films/${filmId}`));
     } catch (error) {
       errorHandle(error);
     }
