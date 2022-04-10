@@ -34,12 +34,12 @@ export enum FilmListCardsQuantity {
 
 export enum APIRoute {
   FilmsList = '/films',
-  Film = '/films/{filmId}',
-  SimilarFilms = '/films/{filmId/similar}',
+  Film = '/films/',
+  SimilarFilms = '/films/{filmId}/similar',
   PromoFilm = '/promo',
   Favorite = '/favorite',
-  ToggleFavorite = '/favorite/{filmId}/{status}',
-  Comments = '/comments/{filmId}',
+  ToggleFavorite = '/favorite/',
+  Comments = '/comments/',
   Login = '/login',
   Logout = '/logout',
 }
@@ -51,3 +51,9 @@ export enum HTTP_CODE {
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
 }
+
+// export enum Tabs {
+//   OVERWIEW = 'Overview',
+//   DETAILS = 'Details',
+//   REVIEWS = 'Reviews',
+// }

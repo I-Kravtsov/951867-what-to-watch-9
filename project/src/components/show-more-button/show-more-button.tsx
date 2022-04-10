@@ -1,12 +1,15 @@
-type ShowMoreButtonProps = {
-  onMoreButtonClick(): void,
-}
+import { useAppDispatch } from '../../hooks';
+import {incrementCardsCount } from '../../store/action';
 
 
-function ShowMoreButton ({onMoreButtonClick}: ShowMoreButtonProps) {
+function ShowMoreButton () {
+  const dispatch = useAppDispatch();
+  const onMoreButtonClickHandler = () => {
+    dispatch(incrementCardsCount());
+  };
   return (
     <div className="catalog__more">
-      <button className="catalog__button" type="button" onClick= {onMoreButtonClick}>Show more</button>
+      <button className="catalog__button" type="button" onClick= {onMoreButtonClickHandler}>Show more</button>
     </div>
   );
 }

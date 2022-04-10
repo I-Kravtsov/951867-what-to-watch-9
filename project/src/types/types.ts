@@ -20,7 +20,7 @@ export type FilmCardType = {
 
 export type FilmsListType = FilmCardType [];
 
-export type comment = {
+export type CommentType = {
   comment: string
   date: string
   id: number
@@ -30,3 +30,5 @@ export type comment = {
     name: string
   }
 };
+
+export type CommentsType = CommentType [];

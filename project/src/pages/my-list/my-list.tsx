@@ -1,26 +1,26 @@
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-// import FilmCard from '../../components/film-card/film-card';
-// import { FilmCardType } from '../../types/types';
-
-// type MyListScreenProps = {
-//   filmsList: FilmCardType[],
-// };
+import FilmsList from '../../components/film-list/film-list';
+import ShowMoreButton from '../../components/show-more-button/show-more-button';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchFavoriteFilmsAction } from '../../store/api-actions';
 
 function MyList(): JSX.Element {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchFavoriteFilmsAction());
+  }, [dispatch]);
+  const favoriteFilms = useAppSelector((state) => state.favoriteFilms);
+  const cardsCount = useAppSelector((state) => state.cardsCount);
   return (
     <div className="user-page">
       <Header />
 
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-        <div className="catalog__films-list">
-          {/* {filmsList.map((filmCard: FilmCardType) => {
-            const keyValue = filmCard.id;
-            return <FilmCard filmCard={filmCard} key = {keyValue} />;
-          })} */}
-        </div>
+        <FilmsList filmsList={favoriteFilms.slice(0, cardsCount)} />
+        {favoriteFilms.length > cardsCount ? <ShowMoreButton /> : ''}
       </section>
 
       <Footer />

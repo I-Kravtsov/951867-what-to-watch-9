@@ -1,26 +1,24 @@
+import { useAppSelector } from '../../hooks';
+import { FilmCardType} from '../../types/types';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import { Fragment } from 'react';
+
+dayjs.extend(duration);
 function Details () {
+  const film: FilmCardType = useAppSelector((state) => state.film);
+
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Director</strong>
-          <span className="film-card__details-value">Wes Anderson</span>
+          <span className="film-card__details-value">{film.director}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
           <span className="film-card__details-value">
-            Bill Murray, <br />
-            Edward Norton, <br />
-            Jude Law, <br />
-            Willem Dafoe, <br />
-            Saoirse Ronan, <br />
-            Tony Revoloru, <br />
-            Tilda Swinton, <br />
-            Tom Wilkinson, <br />
-            Owen Wilkinson, <br />
-            Adrien Brody, <br />
-            Ralph Fiennes, <br />
-            Jeff Goldblum
+            {film.starring.map((item) => <Fragment key={item}>{item} <br/></Fragment>)}
           </span>
         </p>
       </div>
@@ -28,15 +26,16 @@ function Details () {
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Run Time</strong>
-          <span className="film-card__details-value">1h 39m</span>
+          <span className="film-card__details-value">{dayjs.duration(film.runTime, 'minutes').format(`${film.runTime > 60 ? 'H[h] m[m]' : 'm[m]'}`)}</span>
+
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Genre</strong>
-          <span className="film-card__details-value">Comedy</span>
+          <span className="film-card__details-value">{film.genre}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Released</strong>
-          <span className="film-card__details-value">2014</span>
+          <span className="film-card__details-value">{film.released}</span>
         </p>
       </div>
     </div>

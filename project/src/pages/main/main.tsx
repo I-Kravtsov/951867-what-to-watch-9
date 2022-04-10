@@ -4,9 +4,10 @@ import { nanoid } from '@reduxjs/toolkit';
 import FilmsList from '../../components/film-list/film-list';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import { FilmListCardsQuantity} from '../../utils/const';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {incrementCardsCount, resetCardsCount, setCurrentGenre} from '../../store/action';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { resetCardsCount, setCurrentGenre } from '../../store/action';
 import { Link } from 'react-router-dom';
+import FilmCardButtons from '../../components/film-card-buttons/film-card-buttons';
 
 
 function Main(): JSX.Element {
@@ -29,10 +30,6 @@ function Main(): JSX.Element {
     }
     dispatch(setCurrentGenre(target.innerText));
     dispatch(resetCardsCount());
-  };
-
-  const onMoreButtonClickHandler = () => {
-    dispatch(incrementCardsCount());
   };
 
   const filteredFilmList = () => {
@@ -66,20 +63,7 @@ function Main(): JSX.Element {
                 <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
-              <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
-                  </svg>
-                  <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
-              </div>
+              <FilmCardButtons isFavotite={promoFilm.isFavorite} filmId={promoFilm.id} />
             </div>
           </div>
         </div>
@@ -102,7 +86,7 @@ function Main(): JSX.Element {
             )}
           </ul>
           <FilmsList filmsList={filteredFilmList().slice(0, cardsCount)} />
-          {filteredFilmList().length > cardsCount ? <ShowMoreButton onMoreButtonClick={onMoreButtonClickHandler}  /> : ''}
+          {filteredFilmList().length > cardsCount ? <ShowMoreButton /> : ''}
         </section>
 
         <Footer />
