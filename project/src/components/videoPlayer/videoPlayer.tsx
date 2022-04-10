@@ -10,20 +10,16 @@ type VideoPlayerProps = {
 function Videoplayer ({isPlaying, filmCard} : VideoPlayerProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
     if(videoRef.current === null) {
       return;
     }
 
     if(isPlaying) {
-      timeout = setTimeout(() => videoRef.current?.play(), 1000);
+      videoRef.current?.play();
       return;
     }
-
     videoRef.current.load();
-    return() => {
-      clearTimeout(timeout);
-    };
+
   }, [isPlaying]);
   return (
     <div className="small-film-card__image">

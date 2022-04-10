@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { FilmsListType, FilmCardType, CommentsType, NewCommentType } from '../types/types';
-import { setCurrentGenre, incrementCardsCount, resetCardsCount, addComment, loadFavoriteFilms, loadFilmsList, toggleFavoriteFilm, loadComments, loadSimilarFilms, loadPromoFilm, loadFilm, requireAuthorization, setError } from './action';
+import { setCurrentGenre, incrementCardsCount, resetCardsCount, resetCurrentGrnre, addComment, loadFavoriteFilms, loadFilmsList, toggleFavoriteFilm, loadComments, loadSimilarFilms, loadPromoFilm, loadFilm, requireAuthorization, setError } from './action';
 import { AuthorizationStatus } from '../utils/const';
 
 const cardsCountStep = +8;
@@ -104,8 +104,8 @@ const reducer = createReducer(initialState, (builder) => {
       state.isDataLoaded = true;
     })
     .addCase(incrementCardsCount, (state) => {state.cardsCount += cardsCountStep;})
-    .addCase(resetCardsCount, (state) => {state.cardsCount = 8;
-    })
+    .addCase(resetCardsCount, (state) => {state.cardsCount = 8;})
+    .addCase(resetCurrentGrnre, (state) => {state.genre = 'All genres';})
     .addCase(loadFilmsList, (state, action) => {
       state.filmsList = action.payload;
       state.isDataLoaded = true;

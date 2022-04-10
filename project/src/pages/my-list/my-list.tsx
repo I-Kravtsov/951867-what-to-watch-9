@@ -5,11 +5,13 @@ import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFavoriteFilmsAction } from '../../store/api-actions';
+import { resetCardsCount } from '../../store/action';
 
 function MyList(): JSX.Element {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchFavoriteFilmsAction());
+    dispatch(resetCardsCount());
   }, [dispatch]);
   const favoriteFilms = useAppSelector((state) => state.favoriteFilms);
   const cardsCount = useAppSelector((state) => state.cardsCount);

@@ -6,6 +6,7 @@ export const setCurrentGenre = createAction('setCurrentGenre', (value: string) =
 export const getFilmList = createAction('getFilmList', (value: Array<FilmCardType>) => ({payload: value}));
 export const incrementCardsCount = createAction('incrementCardsCount');
 export const resetCardsCount = createAction('resetCardsCount');
+export const resetCurrentGrnre = createAction('resetCurrentGrnre');
 export const loadFilmsList = createAction<FilmsListType>('data/loadFilmsList');
 export const loadPromoFilm = createAction<FilmCardType>('data/loadPromoFilm');
 export const loadFilm = createAction<FilmCardType>('data/loadFilm');

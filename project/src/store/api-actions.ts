@@ -151,6 +151,7 @@ export const logoutAction = createAsyncThunk(
       await api.delete(APIRoute.Logout);
       dropToken();
       store.dispatch(requireAuthorization(AuthorizationStatus.NotAuth));
+      store.dispatch(redirectToRoute(AppRoute.Root));
     } catch(error) {
       errorHandle(error);
     }

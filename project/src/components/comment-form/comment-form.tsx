@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchAddCommentAction } from '../../store/api-actions';
 
@@ -38,12 +38,15 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
       <form action="#" className="add-review__form" onSubmit={handleSubmitFormComment}>
         <div className="rating">
           <div className="rating__stars">
-            {Array.from({length: 10}).map((_, index) => (
-              <>
-                <input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={index} checked={rating === + index} onChange={({target}: React.ChangeEvent<HTMLInputElement>) => {setRatings(+target.value);}}/>
-                <label className="rating__label" htmlFor={`star-${index}`}>Rating {index}</label>
-              </>
-            ))}
+            {Array.from({length: 10}).map((item, index) => {
+              const keyValue = index;
+              return (
+                <Fragment key={keyValue} >
+                  <input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={index} checked={rating === + index} onChange={({target}: React.ChangeEvent<HTMLInputElement>) => {setRatings(+target.value);}}/>
+                  <label className="rating__label" htmlFor={`star-${index}`}>Rating {index}</label>
+                </Fragment>
+              );
+            })}
           </div>
         </div>
         <div className="add-review__text">

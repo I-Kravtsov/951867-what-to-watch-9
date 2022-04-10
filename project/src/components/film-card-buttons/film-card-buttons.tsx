@@ -27,7 +27,7 @@ function FilmCardButtons(props: FilmCardButtonsProps): JSX.Element {
 
   const handlePlayButtonClick = (evt: React.MouseEvent): void => {
     evt.preventDefault();
-    navigate(`/player/:${filmId}`);
+    navigate(`/player/${filmId}`);
   };
 
   return (

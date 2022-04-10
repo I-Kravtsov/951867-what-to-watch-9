@@ -14,12 +14,7 @@ import browserHistory from '../../browser-history';
 import HistoryRouter from '../history-route/history-route';
 
 
-type appScreenProps = {
-  genres: string [],
-};
-
-
-function App({ genres}: appScreenProps): JSX.Element {
+function App(): JSX.Element {
   const {isDataLoaded} = useAppSelector((state) => state);
   const authorisationStatus = useAppSelector((state) => state.authorizationStatus);
 

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { FilmCardType } from '../../types/types';
 
@@ -10,11 +10,12 @@ function Player(): JSX.Element {
   const promoFilm = useAppSelector((state) => state.promoFilm);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const progressRef = useRef<HTMLProgressElement | null>(null);
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [timeLeft, setTimeLeft] = useState<string | null>(null);
-  const [currentPozition, setCurrentPozition] = useState(0);
+  const [currentPosition, setCurrentPosition] = useState(0);
 
 
   const currentFilm = promoFilm.id === Number(id) ? promoFilm : film;
@@ -57,8 +58,10 @@ function Player(): JSX.Element {
       <video
         ref={videoRef}
         onTimeUpdate={(evt) => {
-          setCurrentPozition(evt.currentTarget.currentTime * 100 / evt.currentTarget.duration);
-          getTimeLeft(evt.currentTarget.currentTime, evt.currentTarget.duration);
+          if(videoRef.current !== null) {
+            setCurrentPosition(Number(videoRef.current.currentTime * 100 / videoRef.current.duration));
+            getTimeLeft(videoRef.current.currentTime, videoRef.current.duration);
+          }
         }}
         src={currentFilm.videoLink}
         className="player__video"
@@ -66,7 +69,18 @@ function Player(): JSX.Element {
       >
       </video>
 
-      <button type="button" className="player__exit">Exit</button>
+      <button
+        onClick={() => {
+          if(videoRef.current !== null) {
+            videoRef.current.pause();
+            navigate(-1);
+          }
+        }}
+        type="button"
+        className="player__exit"
+      >
+        Exit
+      </button>
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -74,11 +88,11 @@ function Player(): JSX.Element {
             <progress
               ref={progressRef}
               className="player__progress"
-              value={currentPozition}
+              value={currentPosition}
               max="100"
             >
             </progress>
-            <div className="player__toggler" style={{left: `${currentPozition}%`}}>Toggler</div>
+            <div className="player__toggler" style={{left: `${currentPosition}%`}}>Toggler</div>
           </div>
           <div className="player__time-value">{timeLeft}</div>
         </div>

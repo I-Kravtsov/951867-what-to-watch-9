@@ -12,7 +12,7 @@ import FilmCardButtons from '../../components/film-card-buttons/film-card-button
 
 function Film(): JSX.Element {
   const similarFilmsCount = 4;
-  const {id} =useParams();
+  const {id} = useParams();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchFilmAction(Number(id)));
@@ -26,7 +26,7 @@ function Film(): JSX.Element {
   }
   return (
     <>
-      <section className="film-card film-card--full">
+      <section style={{backgroundColor: film.backgroundColor}} className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
             <img src={film.backgroundImage} alt={film.name} />

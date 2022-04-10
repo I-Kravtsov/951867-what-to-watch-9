@@ -1,13 +1,13 @@
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import { nanoid } from '@reduxjs/toolkit';
 import FilmsList from '../../components/film-list/film-list';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import { FilmListCardsQuantity} from '../../utils/const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { resetCardsCount, setCurrentGenre } from '../../store/action';
+import { resetCardsCount, resetCurrentGrnre, setCurrentGenre } from '../../store/action';
 import { Link } from 'react-router-dom';
 import FilmCardButtons from '../../components/film-card-buttons/film-card-buttons';
+import { useEffect } from 'react';
 
 
 function Main(): JSX.Element {
@@ -22,6 +22,10 @@ function Main(): JSX.Element {
   const cardsCount = useAppSelector((state) => state.cardsCount);
 
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(resetCardsCount());
+    dispatch(resetCurrentGrnre());
+  }, [dispatch]);
 
   const onGenreClickHandler = (evt: React.MouseEvent) => {
     const target = evt.target as HTMLElement;
@@ -80,7 +84,7 @@ function Main(): JSX.Element {
           }}
           >
             {genres.map ((genre) => (
-              <li key={nanoid()} className={genre === currentGenre ? 'catalog__genres-item catalog__genres-item--active' : 'catalog__genres-item'}>
+              <li key={genre} className={genre === currentGenre ? 'catalog__genres-item catalog__genres-item--active' : 'catalog__genres-item'}>
                 <Link to='#' className="catalog__genres-link">{genre}</Link>
               </li>),
             )}
