@@ -1,9 +1,9 @@
 import request from 'axios';
 import { store } from '../store';
-import { setError } from '../store/action';
+import { setError, redirectToRoute } from '../store/action';
 import { clearErrorAction } from '../store/api-actions';
 import { ErrorType } from '../types/error';
-import { HTTP_CODE } from '../utils/const';
+import { HttpCode, AppRoute } from '../utils/const';
 
 export const errorHandle = (error: ErrorType): void => {
   if(!request.isAxiosError(error)) {
@@ -19,17 +19,18 @@ export const errorHandle = (error: ErrorType): void => {
 
   if(response) {
     switch(response.status) {
-      case HTTP_CODE.BAD_REQUEST:
+      case HttpCode.BAD_REQUEST:
         handleError(response.data.error);
         break;
     }
     switch(response.status) {
-      case HTTP_CODE.NOT_FOUND:
+      case HttpCode.NOT_FOUND:
         handleError(response.data.error);
+        store.dispatch(redirectToRoute(AppRoute.NotFound));
         break;
     }
     switch(response.status) {
-      case HTTP_CODE.UNAUTHORIZED:
+      case HttpCode.UNAUTHORIZED:
         handleError(response.data.error);
         break;
     }

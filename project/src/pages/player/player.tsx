@@ -2,10 +2,14 @@ import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { FilmCardType } from '../../types/types';
+import { FilmCardType, FilmsListType } from '../../types/types';
+import { store } from '../../store';
+import { redirectToRoute } from '../../store/action';
+import { AppRoute } from '../../utils/const';
 
 function Player(): JSX.Element {
   const {id} = useParams();
+  const filmsList: FilmsListType = useAppSelector((state) => state.filmsList);
   const film: FilmCardType = useAppSelector((state) => state.film);
   const promoFilm = useAppSelector((state) => state.promoFilm);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -17,6 +21,10 @@ function Player(): JSX.Element {
   const [timeLeft, setTimeLeft] = useState<string | null>(null);
   const [currentPosition, setCurrentPosition] = useState(0);
 
+  if(!filmsList.find((item: FilmCardType) => item.id === Number(id))) {
+
+    store.dispatch(redirectToRoute(AppRoute.NotFound));
+  }
 
   const currentFilm = promoFilm.id === Number(id) ? promoFilm : film;
   const getTimeLeft = (currentTime: number, runTime: number): void => {
@@ -66,6 +74,7 @@ function Player(): JSX.Element {
         src={currentFilm.videoLink}
         className="player__video"
         poster={currentFilm.previewImage}
+        muted
       >
       </video>
 

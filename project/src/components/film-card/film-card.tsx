@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FilmCardType } from '../../types/types';
-import Videoplayer from '../videoPlayer/videoPlayer';
+import Videoplayer from '../video-player/video-player';
 import { useState, SyntheticEvent } from 'react';
 
 
@@ -36,7 +36,7 @@ function FilmCard({filmCard}:FilmCardProps): JSX.Element {
 
   };
   return (
-    <article onClick={handleFilmCardClick} onMouseEnter={handleFilmCardMouseOver} onMouseLeave={handleFilmCardMouseOut}  className="small-film-card catalog__films-card" >
+    <article style={{cursor: 'pointer'}} onClick={handleFilmCardClick} onMouseEnter={handleFilmCardMouseOver} onMouseLeave={handleFilmCardMouseOut}  className="small-film-card catalog__films-card" >
       <Videoplayer isPlaying={isPlaying} filmCard={filmCard} />
       <h3 className="small-film-card__title">
         <Link className="small-film-card__link" to={`/films/${filmCard.id}`}>{filmCard.name}</Link>
