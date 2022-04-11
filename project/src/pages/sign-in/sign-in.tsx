@@ -1,18 +1,21 @@
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { useRef, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/auth-data';
-import { AppRoute } from '../../utils/const';
 
 function SignIn(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement| null>(null);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const error = useAppSelector((state) => state.error);
+  let errorText = '';
+
+  if(error) {
+    errorText = 'We can’t recognize this email and password combination. Please try again.';
+  }
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -26,7 +29,6 @@ function SignIn(): JSX.Element {
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });
-      navigate(AppRoute.Root);
     }
   };
 
@@ -36,6 +38,12 @@ function SignIn(): JSX.Element {
 
       <div className="sign-in user-page__content">
         <form action="#" className="sign-in__form" onSubmit={handleSubmit}>
+
+          <div className="sign-in__message">
+            <p>
+              {errorText}
+            </p>
+          </div>
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input ref={loginRef} className="sign-in__input" type="email" placeholder="Email address" name="user-email" id="user-email" />

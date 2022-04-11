@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {api} from '../store/';
 import { store } from '../store';
 import { FilmsListType, FilmCardType, CommentsType, NewCommentType } from '../types/types';
-import { loadFilmsList, loadFavoriteFilms, loadPromoFilm, loadFilm, loadSimilarFilms, toggleFavoriteFilm, requireAuthorization, setError, redirectToRoute, loadComments, addComment } from './action';
+import { loadFilmsList, loadFavoriteFilms, loadAvatarUrl, loadPromoFilm, loadFilm, loadSimilarFilms, toggleFavoriteFilm, requireAuthorization, setError, redirectToRoute, loadComments, addComment } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { AuthorizationStatus, APIRoute, TIMEOUT_SHOW_ERROR, AppRoute } from '../utils/const';
 import { AuthData } from '../types/auth-data';
@@ -64,6 +64,7 @@ export const fetchToggleFavoriteFilmAction = createAsyncThunk(
       store.dispatch(loadPromoFilm(data));
     } catch (error) {
       errorHandle(error);
+      store.dispatch(redirectToRoute(AppRoute.Login));
     }
   },
 );
@@ -120,8 +121,9 @@ export const checkAuthAction = createAsyncThunk(
   'user/checkAuth',
   async () => {
     try {
-      await api.get(APIRoute.Login);
+      const {data : {avatarUrl}} = await api.get(APIRoute.Login);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(loadAvatarUrl(avatarUrl));
     } catch(error) {
       errorHandle(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NotAuth));
@@ -133,12 +135,14 @@ export const loginAction = createAsyncThunk(
   'user/login',
   async ({login: email, password}: AuthData) => {
     try {
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+      const {data: {token, avatarUrl}} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(token);
+      store.dispatch(loadAvatarUrl(avatarUrl));
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
       store.dispatch(redirectToRoute(AppRoute.MyList));
     } catch(error) {
       errorHandle(error);
+      store.dispatch(redirectToRoute(AppRoute.Login));
       store.dispatch(requireAuthorization(AuthorizationStatus.NotAuth));
     }
   },
@@ -149,9 +153,9 @@ export const logoutAction = createAsyncThunk(
   async () => {
     try {
       await api.delete(APIRoute.Logout);
+      store.dispatch(redirectToRoute(AppRoute.Root));
       dropToken();
       store.dispatch(requireAuthorization(AuthorizationStatus.NotAuth));
-      store.dispatch(redirectToRoute(AppRoute.Root));
     } catch(error) {
       errorHandle(error);
     }

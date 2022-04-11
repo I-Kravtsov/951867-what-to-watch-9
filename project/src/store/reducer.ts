@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { FilmsListType, FilmCardType, CommentsType, NewCommentType } from '../types/types';
-import { setCurrentGenre, incrementCardsCount, resetCardsCount, resetCurrentGrnre, addComment, loadFavoriteFilms, loadFilmsList, toggleFavoriteFilm, loadComments, loadSimilarFilms, loadPromoFilm, loadFilm, requireAuthorization, setError } from './action';
+import { setCurrentGenre, incrementCardsCount, resetCardsCount, resetCurrentGrnre, addComment, loadFavoriteFilms, loadFilmsList, toggleFavoriteFilm, loadComments, loadSimilarFilms, loadPromoFilm, loadFilm, requireAuthorization, setError, loadAvatarUrl } from './action';
 import { AuthorizationStatus } from '../utils/const';
 
 const cardsCountStep = +8;
@@ -18,6 +18,7 @@ type initialStateType = {
   error: string,
   comments: CommentsType,
   comment: NewCommentType,
+  avatarUrl: string,
 }
 
 const initialState: initialStateType = {
@@ -72,6 +73,7 @@ const initialState: initialStateType = {
   authorizationStatus: AuthorizationStatus.Unknown,
   isDataLoaded: false,
   error: '',
+  avatarUrl: '',
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -116,6 +118,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(loadAvatarUrl, (state, action) => {
+      state.avatarUrl = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;

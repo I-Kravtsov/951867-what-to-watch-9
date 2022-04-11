@@ -42,7 +42,7 @@ function CommentForm({filmId}: CommentFormProps): JSX.Element {
               const keyValue = index;
               return (
                 <Fragment key={keyValue} >
-                  <input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={index} checked={rating === + index} onChange={({target}: React.ChangeEvent<HTMLInputElement>) => {setRatings(+target.value);}}/>
+                  <input className="rating__input" id={`star-${index}`} type="radio" name="rating" value={10-index} checked={rating === + (10 - index)} onChange={({target}: React.ChangeEvent<HTMLInputElement>) => {setRatings(+target.value);}}/>
                   <label className="rating__label" htmlFor={`star-${index}`}>Rating {index}</label>
                 </Fragment>
               );

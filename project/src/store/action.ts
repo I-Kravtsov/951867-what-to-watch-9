@@ -18,3 +18,4 @@ export const addComment = createAction<NewCommentType>('data/addComment');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 export const setError = createAction<string>('setError');
 export const redirectToRoute = createAction<AppRoute | string>('redirectToRoute');
+export const loadAvatarUrl = createAction<string>('loadAvatarUrl');
